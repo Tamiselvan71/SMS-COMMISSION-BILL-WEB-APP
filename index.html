@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>SMS Commission Mandi - Cash Bill</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+background:#eef1f3;
+font-family:Arial,"Noto Sans Tamil",sans-serif;
+color:#111
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{max-width:920px;margin:auto;padding:12px}
+
+.panel{
+background:#fff;
+border-radius:12px;
+padding:14px;
+margin-bottom:12px;
+box-shadow:0 2px 10px #0001
+}
+
+h2{margin:3px 0 12px}
+h3{margin:10px 0}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:9px
+}
+
+.field label{
+display:block;
+font-size:12px;
+font-weight:bold;
+margin-bottom:4px
+}
+
+input{
+width:100%;
+padding:9px;
+border:1px solid #aaa;
+border-radius:6px;
+background:#fff
+}
+
+.btns{
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+margin-top:10px
+}
+
+.btn{
+border:0;
+border-radius:7px;
+padding:10px 14px;
+font-weight:bold;
+background:#222;
+color:#fff
+}
+.green{background:#168447}
+.blue{background:#1769aa}
+.red{background:#b52b2b}
+.gray{background:#666}
+
+.logoUpload{
+border:2px dashed #168447;
+padding:12px;
+border-radius:8px;
+background:#f5fff8;
+margin-bottom:12px
+}
+
+.logoUpload small{
+display:block;
+margin-top:5px;
+color:#555
+}
+
+.items{
+width:100%;
+border-collapse:collapse;
+margin-top:8px
+}
+
+.items th,.items td{
+border:1px solid #999;
+padding:5px;
+text-align:center
+}
+
+.items th{
+background:#eee;
+font-size:12px
+}
+
+.items input{
+border:0;
+border-radius:0;
+padding:5px;
+text-align:center
+}
+
+.remove{
+background:#c62828;
+color:white;
+border:0;
+border-radius:4px;
+padding:5px 8px
+}
+
+/* BILL */
+
+#billArea{
+background:#fff;
+padding:10px
+}
+
+.bill{
+width:100%;
+background:#fff;
+border:2px solid #168447;
+color:#111
+}
+
+.billHeader{
+border-bottom:2px solid #168447;
+min-height:125px;
+display:grid;
+grid-template-columns:100px 1fr 150px;
+align-items:center;
+padding:7px
+}
+
+.logo{
+width:84px;
+height:84px;
+border:2px solid #168447;
+border-radius:50%;
+object-fit:cover;
+display:block;
+margin:auto
+}
+
+.logoEmpty{
+width:84px;
+height:84px;
+border:2px dashed #168447;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+margin:auto;
+font-size:11px;
+font-weight:bold;
+color:#168447;
+padding:8px
+}
+
+.centerHead{
+text-align:center;
+line-height:1.25
+}
+
+.devotional{
+font-size:14px;
+font-weight:bold
+}
+
+.cash{
+font-size:25px;
+font-weight:900;
+letter-spacing:2px
+}
+
+.sms{
+font-size:31px;
+font-weight:900;
+color:#168447
+}
+
+.sub{
+font-size:12px;
+font-weight:bold
+}
+
+.owner{
+font-size:12px;
+margin-top:3px
+}
+
+.phone{
+text-align:right;
+font-size:12px;
+line-height:1.7;
+font-weight:bold
+}
+
+.billInfo{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+border-bottom:2px solid #168447
+}
+
+.billInfo div{
+padding:7px;
+border-right:1px solid #168447;
+font-size:13px
+}
+
+.billInfo div:last-child{
+border-right:0
+}
+
+.billTable{
+width:100%;
+border-collapse:collapse
+}
+
+.billTable th,.billTable td{
+border:1px solid #168447;
+padding:6px 4px;
+font-size:12px
+}
+
+.billTable th{
+background:#e8f5ed;
+font-weight:bold
+}
+
+.billTable td{
+text-align:center
+}
+
+.billTable td.desc{
+text-align:left
+}
+
+.summary{
+margin-left:auto;
+width:58%;
+border-collapse:collapse;
+margin-top:8px
+}
+
+.summary td{
+border:1px solid #168447;
+padding:6px;
+font-size:12px
+}
+
+.summary td:last-child{
+text-align:right;
+font-weight:bold
+}
+
+.net{
+font-size:15px!important;
+font-weight:900!important;
+background:#e8f5ed
+}
+
+.footer{
+border-top:2px solid #168447;
+padding:7px;
+text-align:center;
+font-size:11px;
+font-weight:bold
+}
+
+.balancePositive{
+font-weight:900!important
+}
+
+@media(max-width:600px){
+
+.grid{
+grid-template-columns:1fr
+}
+
+.billHeader{
+grid-template-columns:75px 1fr
+}
+
+.phone{
+grid-column:1/-1;
+text-align:center;
+border-top:1px solid #168447;
+margin-top:5px;
+padding-top:4px
+}
+
+.logo,.logoEmpty{
+width:65px;
+height:65px
+}
+
+.cash{
+font-size:19px
+}
+
+.sms{
+font-size:25px
+}
+
+.billInfo{
+grid-template-columns:1fr
+}
+
+.billInfo div{
+border-right:0;
+border-bottom:1px solid #168447
+}
+
+.summary{
+width:100%
+}
+
+.billTable th,
+.billTable td{
+font-size:10px;
+padding:4px 2px
+}
+
+}
+
+@media print{
+
+body{
+background:#fff
+}
+
+.noPrint{
+display:none!important
+}
+
+.app{
+max-width:none;
+padding:0
+}
+
+.panel{
+box-shadow:none;
+padding:0
+}
+
+#billArea{
+padding:0
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- BILL SETTINGS / LOGO -->
+
+<div class="panel noPrint">
+
+<h2>🧾 SMS Commission Mandi</h2>
+
+<div class="logoUpload">
+
+<b>🛕 Bill Logo / Murugan Photo</b>
+
+<input
+type="file"
+id="logoFile"
+accept="image/*"
+style="margin-top:8px"
+>
+
+<small>
+Murugan photo இல்லனா உங்கள் company logo / எந்த logo வேண்டுமானாலும் upload பண்ணலாம்.
+ஒரு தடவை upload பண்ணினால் இந்த browser-ல் save ஆகும்.
+</small>
+
+<div class="btns">
+<button class="btn red" onclick="removeLogo()">
+Remove Logo
+</button>
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="field">
+<label>Bill No</label>
+<input id="billNo">
+</div>
+
+<div class="field">
+<label>Date</label>
+<input type="date" id="billDate">
+</div>
+
+<div class="field">
+<label>Customer / Shop Name</label>
+<input id="customer" placeholder="Customer name">
+</div>
+
+<div class="field">
+<label>Customer Phone</label>
+<input id="customerPhone" placeholder="Phone">
+</div>
+
+</div>
+
+
+<hr>
+
+<h3>🥬 Vegetables / Items</h3>
+
+<table class="items">
+
+<thead>
+<tr>
+<th>S.No</th>
+<th>Description</th>
+<th>Qty</th>
+<th>Weight KG</th>
+<th>Rate</th>
+<th>Amount</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody id="itemBody"></tbody>
+
+</table>
+
+<div class="btns">
+<button class="btn blue" onclick="addItem()">
+＋ Add Item
+</button>
+</div>
+
+
+<hr>
+
+<h3>💰 Bill Amount / Balance</h3>
+
+<div class="grid">
+
+<div class="field">
+<label>Commission - Less</label>
+<input
+type="number"
+id="commission"
+value="0"
+oninput="calculate()">
+</div>
+
+<div class="field">
+<label>Coolie - Less</label>
+<input
+type="number"
+id="coolie"
+value="0"
+oninput="calculate()">
+</div>
+
+<div class="field">
+<label>Transport - Less</label>
+<input
+type="number"
+id="transport"
+value="0"
+oninput="calculate()">
+</div>
+
+<div class="field">
+<label>Other - Less</label>
+<input
+type="number"
+id="other"
+value="0"
+oninput="calculate()">
+</div>
+
+<div class="field">
+<label>Previous Balance</label>
+<input
+type="number"
+id="previous"
+value="0"
+oninput="calculate()">
+</div>
+
+<div class="field">
+<label>Received / Paid</label>
+<input
+type="number"
+id="received"
+value="0"
+oninput="calculate()">
+</div>
+
+</div>
+
+
+<div class="btns">
+
+<button class="btn green" onclick="saveBill()">
+💾 Save Bill
+</button>
+
+<button class="btn blue" onclick="downloadImage()">
+🖼️ Bill Image
+</button>
+
+<button class="btn gray" onclick="window.print()">
+🖨️ Print / PDF
+</button>
+
+<button class="btn red" onclick="clearBill()">
+Clear
+</button>
+
+</div>
+
+</div>
+
+
+<!-- BILL PREVIEW -->
+
+<div class="panel" id="billArea">
+
+<div class="bill" id="bill">
+
+
+<div class="billHeader">
+
+<div id="logoBox">
+<div class="logoEmpty">
+UPLOAD<br>
+MURUGAN /<br>
+COMPANY LOGO
+</div>
+</div>
+
+
+<div class="centerHead">
+
+<div class="devotional">
+🙏 ஸ்ரீ காமாட்சியம்மன் துணை 🙏
+</div>
+
+<div class="cash">
+CASH BILL
+</div>
+
+<div class="sms">
+S.M.S.
+</div>
+
+<div class="sub">
+தக்காளி, காய்கறி கமிஷன் ஏஜெண்ட்
+</div>
+
+<div class="sub">
+காய்கறி மொத்த வியாபாரம்
+</div>
+
+<div class="owner">
+உரிமையாளர் : S.மருதமுத்து
+</div>
+
+</div>
+
+
+<div class="phone">
+📞 99528 23388<br>
+📞 99761 18288
+</div>
+
+</div>
+
+
+<div class="billInfo">
+
+<div>
+<b>Bill No:</b>
+<span id="pBillNo">---</span>
+</div>
+
+<div>
+<b>Customer:</b>
+<span id="pCustomer">---</span>
+</div>
+
+<div>
+<b>Date:</b>
+<span id="pDate">---</span>
+</div>
+
+</div>
+
+
+<table class="billTable">
+
+<thead>
+
+<tr>
+<th style="width:7%">S.No</th>
+<th>Description</th>
+<th style="width:10%">Qty</th>
+<th style="width:13%">Weight<br>KG</th>
+<th style="width:14%">Rate</th>
+<th style="width:16%">Amount</th>
+</tr>
+
+</thead>
+
+<tbody id="previewItems"></tbody>
+
+</table>
+
+
+<!-- NO GRADE / CRATE SECTION -->
+
+
+<table class="summary">
+
+<tr>
+<td>Items Total</td>
+<td id="pItemsTotal">₹0.00</td>
+</tr>
+
+<tr>
+<td>Less: Commission</td>
+<td id="pCommission">- ₹0.00</td>
+</tr>
+
+<tr>
+<td>Less: Coolie</td>
+<td id="pCoolie">- ₹0.00</td>
+</tr>
+
+<tr>
+<td>Less: Transport</td>
+<td id="pTransport">- ₹0.00</td>
+</tr>
+
+<tr>
+<td>Less: Other</td>
+<td id="pOther">- ₹0.00</td>
+</tr>
+
+<tr class="net">
+<td>NET BILL</td>
+<td id="pNet">₹0.00</td>
+</tr>
+
+<tr>
+<td>Previous Balance</td>
+<td id="pPrevious">₹0.00</td>
+</tr>
+
+<tr>
+<td>Received</td>
+<td id="pReceived">₹0.00</td>
+</tr>
+
+<tr class="net">
+<td>BALANCE</td>
+<td id="pBalance">₹0.00</td>
+</tr>
+
+</table>
+
+
+<div class="footer">
+Thank you for your business • SMS COMMISSION MANDI
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+<script>
+
+let itemCount=0;
+
+const $=id=>document.getElementById(id);
+
+
+/* MONEY */
+
+function money(n){
+
+return "₹"+Number(n||0).toLocaleString("en-IN",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+});
+
+}
+
+
+/* NUMBER */
+
+function num(id){
+
+return Number($(id).value)||0;
+
+}
+
+
+/* ADD ITEM */
+
+function addItem(data={}){
+
+itemCount++;
+
+const tr=document.createElement("tr");
+
+tr.innerHTML=`
+
+<td>${itemCount}</td>
+
+<td>
+<input
+class="desc"
+value="${escapeHTML(data.desc||"")}"
+placeholder="Tomato">
+</td>
+
+<td>
+<input
+class="qty"
+type="number"
+value="${data.qty||0}"
+oninput="calculate()">
+</td>
+
+<td>
+<input
+class="weight"
+type="number"
+value="${data.weight||0}"
+oninput="calculate()">
+</td>
+
+<td>
+<input
+class="rate"
+type="number"
+value="${data.rate||0}"
+oninput="calculate()">
+</td>
+
+<td class="amount">
+₹0.00
+</td>
+
+<td>
+<button
+class="remove"
+onclick="
+this.closest('tr').remove();
+renumber();
+calculate();
+">
+×
+</button>
+</td>
+
+`;
+
+$("itemBody").appendChild(tr);
+
+calculate();
+
+}
+
+
+/* HTML SAFE */
+
+function escapeHTML(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* NUMBERING */
+
+function renumber(){
+
+[...$("itemBody").children].forEach((tr,i)=>{
+tr.children[0].textContent=i+1;
+});
+
+}
+
+
+/* CALCULATION */
+
+function calculate(){
+
+let total=0;
+
+
+[...$("itemBody").children].forEach(tr=>{
+
+const qty=
+Number(tr.querySelector(".qty").value)||0;
+
+const rate=
+Number(tr.querySelector(".rate").value)||0;
+
+const amount=qty*rate;
+
+tr.querySelector(".amount").textContent=
+money(amount);
+
+total+=amount;
+
+});
+
+
+/*
+IMPORTANT:
+
+ITEM TOTAL
+MINUS COMMISSION
+MINUS COOLIE
+MINUS TRANSPORT
+MINUS OTHER
+= NET BILL
+*/
+
+const commission=num("commission");
+const coolie=num("coolie");
+const transport=num("transport");
+const other=num("other");
+
+const deductions=
+commission+
+coolie+
+transport+
+other;
+
+const net=
+Math.max(0,total-deductions);
+
+
+/*
+PREVIOUS BALANCE
+PLUS NET BILL
+MINUS RECEIVED
+= CURRENT BALANCE
+*/
+
+const previous=num("previous");
+
+const received=num("received");
+
+const balance=
+previous+
+net-
+received;
+
+
+$("pItemsTotal").textContent=
+money(total);
+
+$("pCommission").textContent=
+"- "+money(commission);
+
+$("pCoolie").textContent=
+"- "+money(coolie);
+
+$("pTransport").textContent=
+"- "+money(transport);
+
+$("pOther").textContent=
+"- "+money(other);
+
+$("pNet").textContent=
+money(net);
+
+$("pPrevious").textContent=
+money(previous);
+
+$("pReceived").textContent=
+money(received);
+
+$("pBalance").textContent=
+money(balance);
+
+
+updatePreview();
+
+}
+
+
+/* PREVIEW */
+
+function updatePreview(){
+
+$("pBillNo").textContent=
+$("billNo").value||"---";
+
+$("pCustomer").textContent=
+$("customer").value||"---";
+
+
+const d=$("billDate").value;
+
+$("pDate").textContent=d
+?new Date(d+"T00:00:00").toLocaleDateString("en-IN")
+:"---";
+
+
+const tbody=$("previewItems");
+
+tbody.innerHTML="";
+
+
+[...$("itemBody").children].forEach((tr,i)=>{
+
+const desc=
+tr.querySelector(".desc").value||"";
+
+const qty=
+Number(tr.querySelector(".qty").value)||0;
+
+const weight=
+Number(tr.querySelector(".weight").value)||0;
+
+const rate=
+Number(tr.querySelector(".rate").value)||0;
+
+const amount=
+qty*rate;
+
+
+const row=document.createElement("tr");
+
+row.innerHTML=`
+
+<td>${i+1}</td>
+
+<td class="desc">
+${escapeHTML(desc)}
+</td>
+
+<td>${qty}</td>
+
+<td>${weight}</td>
+
+<td>${money(rate)}</td>
+
+<td>${money(amount)}</td>
+
+`;
+
+tbody.appendChild(row);
+
+});
+
+}
+
+
+/* SAVE BILL */
+
+function saveBill(){
+
+/*
+LOGO COMPULSORY
+*/
+
+if(!localStorage.getItem("SMS_MANDI_LOGO")){
+
+alert(
+"முதலில் Murugan Photo அல்லது Company Logo upload பண்ணுங்க."
+);
+
+return;
+
+}
+
+
+calculate();
+
+
+const bill={
+
+billNo:$("billNo").value,
+
+date:$("billDate").value,
+
+customer:$("customer").value,
+
+phone:$("customerPhone").value,
+
+
+items:[...$("itemBody").children].map(tr=>({
+
+desc:tr.querySelector(".desc").value,
+
+qty:
+Number(tr.querySelector(".qty").value)||0,
+
+weight:
+Number(tr.querySelector(".weight").value)||0,
+
+rate:
+Number(tr.querySelector(".rate").value)||0
+
+})),
+
+
+commission:num("commission"),
+
+coolie:num("coolie"),
+
+transport:num("transport"),
+
+other:num("other"),
+
+previous:num("previous"),
+
+received:num("received"),
+
+savedAt:new Date().toISOString()
+
+};
+
+
+const old=
+JSON.parse(
+localStorage.getItem("SMS_MANDI_BILLS")||"[]"
+);
+
+
+old.push(bill);
+
+
+localStorage.setItem(
+"SMS_MANDI_BILLS",
+JSON.stringify(old)
+);
+
+
+alert("Bill Saved Successfully ✅");
+
+}
+
+
+/* CLEAR */
+
+function clearBill(){
+
+if(!confirm("Current bill clear பண்ணலாமா?"))return;
+
+
+$("customer").value="";
+
+$("customerPhone").value="";
+
+$("commission").value=0;
+
+$("coolie").value=0;
+
+$("transport").value=0;
+
+$("other").value=0;
+
+$("previous").value=0;
+
+$("received").value=0;
+
+
+$("itemBody").innerHTML="";
+
+itemCount=0;
+
+
+const bills=
+JSON.parse(
+localStorage.getItem("SMS_MANDI_BILLS")||"[]"
+);
+
+$("billNo").value=
+String(bills.length+1).padStart(4,"0");
+
+
+addItem();
+
+calculate();
+
+}
+
+
+/* BILL IMAGE */
+
+function downloadImage(){
+
+calculate();
+
+
+html2canvas($("bill"),{
+
+scale:3,
+
+backgroundColor:"#ffffff",
+
+useCORS:true
+
+}).then(canvas=>{
+
+const a=
+document.createElement("a");
+
+a.download=
+"SMS-Cash-Bill-"+
+($("billNo").value||"Bill")+
+".png";
+
+a.href=
+canvas.toDataURL("image/png");
+
+a.click();
+
+});
+
+}
+
+
+/* LOGO UPLOAD */
+
+$("logoFile").addEventListener(
+"change",
+function(){
+
+const file=this.files[0];
+
+if(!file)return;
+
+
+if(!file.type.startsWith("image/")){
+
+alert("Image file மட்டும் upload பண்ணுங்க.");
+
+this.value="";
+
+return;
+
+}
+
+
+const reader=
+new FileReader();
+
+
+reader.onload=function(e){
+
+const imageData=e.target.result;
+
+
+/*
+SAVE LOGO IN BROWSER
+*/
+
+localStorage.setItem(
+"SMS_MANDI_LOGO",
+imageData
+);
+
+
+/*
+SHOW LOGO
+*/
+
+showLogo(imageData);
+
+};
+
+
+reader.readAsDataURL(file);
+
+});
+
+
+/* SHOW LOGO */
+
+function showLogo(src){
+
+$("logoBox").innerHTML=`
+
+<img
+src="${src}"
+class="logo"
+alt="SMS Commission Mandi Logo">
+
+`;
+
+}
+
+
+/* REMOVE LOGO */
+
+function removeLogo(){
+
+if(!confirm("Logo remove பண்ணலாமா?"))return;
+
+localStorage.removeItem("SMS_MANDI_LOGO");
+
+$("logoBox").innerHTML=`
+
+<div class="logoEmpty">
+UPLOAD<br>
+MURUGAN /<br>
+COMPANY LOGO
+</div>
+
+`;
+
+$("logoFile").value="";
+
+}
+
+
+/* LOAD LOGO AFTER REFRESH */
+
+function loadLogo(){
+
+const logo=
+localStorage.getItem("SMS_MANDI_LOGO");
+
+if(logo){
+
+showLogo(logo);
+
+}
+
+}
+
+
+/* DATE */
+
+$("billDate").value=
+new Date().toISOString().split("T")[0];
+
+
+/* AUTO BILL NUMBER */
+
+const savedBills=
+JSON.parse(
+localStorage.getItem("SMS_MANDI_BILLS")||"[]"
+);
+
+$("billNo").value=
+String(savedBills.length+1).padStart(4,"0");
+
+
+/* LIVE PREVIEW */
+
+[
+"billNo",
+"customer",
+"customerPhone",
+"billDate"
+].forEach(id=>{
+
+$(id).addEventListener(
+"input",
+updatePreview
+);
+
+});
+
+
+/* START */
+
+addItem();
+
+loadLogo();
+
+calculate();
+
+</script>
+
+</body>
+  </html>
